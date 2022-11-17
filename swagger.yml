@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info: 
+  title: "Flask REST API"
+  description: "API"
+  version: "1.0.0"
+
+servers: 
+  - url: "/api"
+
+components:
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      x-apikeyInfoFunc: distance.apikey_auth
+  schemas:
+    Cities:
+      type: object
+      properties:
+        city_start: 
+          type: integer
+        city_finish:
+          type: integer
+  parameters:
+    city_start:
+      name: "city_start"
+      description: "city_start"
+      in: query
+      required: True
+      schema:
+        type: integer
+    city_finish:
+      name: "city_finish"
+      description: "city_finish"
+      in: query
+      required: True
+      schema:
+        type: integer
+    
+
+
+paths: 
+  /distance:
+    get:
+      security:
+        - X-API-KEY: []
+      description: "get distance between two cities"
+      operationId: "distance.get_distances"
+      tags:
+        - Distance
+      summary: "get distance between two cities"
+      parameters: 
+        - name: "city_start"
+          in: query
+          description: "city_start"
+          required: True
+          schema:
+            type: integer
+        - name: "city_finish"
+          in: query
+          description: "city_finish"
+          required: True
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Everything seems to be ok"
+        "400":
+          description: "Bad request"
+        "401": 
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+        "422":
+          description: "Validation error"
+
+
